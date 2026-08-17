@@ -1,0 +1,617 @@
+{
+  "winner": {
+    "name": "KNeighborsClassifier (P50)",
+    "params": {
+      "n_neighbors": 21,
+      "metric": "cosine",
+      "weights": "distance",
+      "algorithm": "brute"
+    },
+    "mode": "P50",
+    "percentile": 50,
+    "thresholds_tuning": [
+      0.8534031413612565,
+      0.8272251308900523,
+      0.581151832460733,
+      0.6308900523560209,
+      0.6518324607329843,
+      0.7722513089005235
+    ],
+    "Eval_SCS": 0.9090075940670614,
+    "PenalizedObj": 0.9083599881185412,
+    "Eval_Acceptance": 0.8606060606060606,
+    "bundle_dir": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13"
+  },
+  "constants": {
+    "embedding_model": "sentence-transformers/all-mpnet-base-v2",
+    "l2_normalized_embeddings": true,
+    "random_state": 13,
+    "use_row_weights": true,
+    "row_weight_rule": "w = 1 + log(1 + freq); clip [0.5, 3.0]; divide by mean",
+    "use_oof": true,
+    "oof_folds_K": 5,
+    "oof_splitter": "KFold(n_splits=5, shuffle=True, random_state=13)",
+    "calibration": "per-level empirical CDF on OOF core scores; cdf = rank/(n+1); interp with clamped tails",
+    "percentile_grid": [
+      20,
+      25,
+      30,
+      35,
+      40,
+      45,
+      50,
+      55,
+      60
+    ],
+    "scs_weights": {
+      "wD": 1.0,
+      "wM": 1.0,
+      "wT": 0.8,
+      "wC": 0.3,
+      "wE": 0.05
+    },
+    "scs_empty_min": 10,
+    "scs_target_ratio": 1.51,
+    "scs_acc_window": [
+      0.3,
+      0.85
+    ],
+    "scs_empty_level_pen_in_objective": 0.05,
+    "targets": {
+      "ACC_BAND": [
+        0.85,
+        0.851
+      ],
+      "ENAC_BAND": [
+        1.5079265091863516,
+        1.6679265091863518
+      ],
+      "SCS_TIE_EPS": 0.02,
+      "PEN_ACC": 5.0,
+      "PEN_ENAC": 2.5,
+      "bootstrap": 400,
+      "margin_acc": 0.08,
+      "margin_enac": 0.08,
+      "acc_band_clamp": [
+        0.25,
+        0.85
+      ]
+    },
+    "min_accept": 0.01,
+    "top2_margin_delta": 0.06,
+    "suggest_alpha": 0.85,
+    "legacy_knn_grid": {
+      "Ks": [
+        5,
+        7,
+        9,
+        11,
+        13,
+        15
+      ],
+      "Th": [
+        0.12,
+        0.14,
+        0.16,
+        0.2,
+        0.24,
+        0.28,
+        0.32
+      ],
+      "Ct": [
+        6,
+        8,
+        10,
+        12,
+        16,
+        20,
+        24,
+        28,
+        32
+      ]
+    },
+    "levels": [
+      "Kn",
+      "Cm",
+      "Ap",
+      "An",
+      "Sn",
+      "Ev"
+    ]
+  },
+  "model_zoo": [
+    {
+      "model": "LinearSVC",
+      "param_grid": [
+        {
+          "C": 0.1,
+          "class_weight": "balanced",
+          "max_iter": 5000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "C": 0.5,
+          "class_weight": "balanced",
+          "max_iter": 5000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "max_iter": 5000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "C": 2.0,
+          "class_weight": "balanced",
+          "max_iter": 5000,
+          "tol": 0.0001,
+          "random_state": 13
+        }
+      ]
+    },
+    {
+      "model": "CalibratedSVC",
+      "param_grid": [
+        {
+          "C": 0.5
+        },
+        {
+          "C": 1.0
+        },
+        {
+          "C": 2.0
+        }
+      ]
+    },
+    {
+      "model": "LogisticRegression",
+      "param_grid": [
+        {
+          "C": 0.1,
+          "solver": "liblinear",
+          "penalty": "l2",
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "random_state": 13
+        },
+        {
+          "C": 0.5,
+          "solver": "liblinear",
+          "penalty": "l2",
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "random_state": 13
+        },
+        {
+          "C": 1.0,
+          "solver": "liblinear",
+          "penalty": "l2",
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "random_state": 13
+        }
+      ]
+    },
+    {
+      "model": "RidgeClassifier",
+      "param_grid": [
+        {
+          "alpha": 1.0
+        },
+        {
+          "alpha": 5.0
+        },
+        {
+          "alpha": 10.0
+        }
+      ]
+    },
+    {
+      "model": "SGDClassifier",
+      "param_grid": [
+        {
+          "loss": "hinge",
+          "alpha": 0.0001,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "loss": "hinge",
+          "alpha": 1e-05,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "loss": "log_loss",
+          "alpha": 1e-05,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        }
+      ]
+    },
+    {
+      "model": "PassiveAggressive",
+      "param_grid": [
+        {
+          "C": 0.5,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        },
+        {
+          "C": 2.0,
+          "class_weight": "balanced",
+          "max_iter": 4000,
+          "tol": 0.0001,
+          "random_state": 13
+        }
+      ]
+    },
+    {
+      "model": "LDA",
+      "param_grid": [
+        {
+          "solver": "lsqr",
+          "shrinkage": "auto"
+        }
+      ]
+    },
+    {
+      "model": "QDA",
+      "param_grid": [
+        {
+          "reg_param": 0.05
+        },
+        {
+          "reg_param": 0.1
+        }
+      ]
+    },
+    {
+      "model": "GaussianNB",
+      "param_grid": [
+        {
+          "var_smoothing": 1e-09
+        },
+        {
+          "var_smoothing": 1e-08
+        }
+      ]
+    },
+    {
+      "model": "NearestCentroid",
+      "param_grid": [
+        {
+          "metric": "euclidean"
+        }
+      ]
+    },
+    {
+      "model": "KNeighborsClassifier",
+      "param_grid": [
+        {
+          "n_neighbors": 11,
+          "metric": "cosine",
+          "weights": "distance",
+          "algorithm": "brute"
+        },
+        {
+          "n_neighbors": 21,
+          "metric": "cosine",
+          "weights": "distance",
+          "algorithm": "brute"
+        }
+      ]
+    },
+    {
+      "model": "Legacy kNN",
+      "param_grid": "vote grid (Ks x Th x Ct above), unweighted and freq-weighted"
+    }
+  ],
+  "table5_model_comparison": [
+    {
+      "Model": "SGDClassifier (P55)",
+      "Params": "{'loss': 'hinge', 'alpha': 1e-05, 'class_weight': 'balanced', 'max_iter': 4000, 'tol': 0.0001, 'random_state': 13}",
+      "Core_SCS": 0.896408642,
+      "Core_Acceptance": 0.8950131234,
+      "Core_EntryRate": 1.6456692913,
+      "Core_en_over_ac": 1.8387096774,
+      "Core_D": 0.1446009145,
+      "Core_M": 0.1615923426,
+      "Core_trend": 1.0,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.9976565381,
+      "Eval_Acceptance": 0.8042424242,
+      "Eval_EntryRate": 1.1818181818,
+      "Eval_en_over_ac": 1.4694800301,
+      "Eval_D": 0.1760081045,
+      "Eval_M": 0.0919976507,
+      "Eval_trend": 1.0,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.9834924301
+    },
+    {
+      "Model": "PassiveAggressive (P50)",
+      "Params": "{'C': 0.5, 'class_weight': 'balanced', 'max_iter': 4000, 'tol': 0.0001, 'random_state': 13}",
+      "Core_SCS": 0.8287382782,
+      "Core_Acceptance": 0.9160104987,
+      "Core_EntryRate": 1.8162729659,
+      "Core_en_over_ac": 1.9828080229,
+      "Core_D": 0.139679289,
+      "Core_M": 0.1846102041,
+      "Core_trend": 0.95,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.921446937,
+      "Eval_Acceptance": 0.8333333333,
+      "Eval_EntryRate": 1.3866666667,
+      "Eval_en_over_ac": 1.664,
+      "Eval_D": 0.1451818318,
+      "Eval_M": 0.1370280307,
+      "Eval_trend": 1.0,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.9200580481
+    },
+    {
+      "Model": "KNeighborsClassifier (P50)",
+      "Params": "{'n_neighbors': 21, 'metric': 'cosine', 'weights': 'distance', 'algorithm': 'brute'}",
+      "Core_SCS": 0.868784155,
+      "Core_Acceptance": 0.9160104987,
+      "Core_EntryRate": 1.687664042,
+      "Core_en_over_ac": 1.8424068768,
+      "Core_D": 0.1899975959,
+      "Core_M": 0.1580764098,
+      "Core_trend": 0.9,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.9090075941,
+      "Eval_Acceptance": 0.8606060606,
+      "Eval_EntryRate": 1.2903030303,
+      "Eval_en_over_ac": 1.4992957746,
+      "Eval_D": 0.1721330903,
+      "Eval_M": 0.0975446327,
+      "Eval_trend": 0.9,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.9083599881
+    },
+    {
+      "Model": "LinearSVC (P45)",
+      "Params": "{'C': 2.0, 'class_weight': 'balanced', 'max_iter': 5000, 'tol': 0.0001, 'random_state': 13}",
+      "Core_SCS": 0.8132200527,
+      "Core_Acceptance": 0.9422572178,
+      "Core_EntryRate": 1.9658792651,
+      "Core_en_over_ac": 2.0863509749,
+      "Core_D": 0.1419330538,
+      "Core_M": 0.2029541657,
+      "Core_trend": 0.95,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.8993169301,
+      "Eval_Acceptance": 0.8557575758,
+      "Eval_EntryRate": 1.4418181818,
+      "Eval_en_over_ac": 1.6848441926,
+      "Eval_D": 0.1568550789,
+      "Eval_M": 0.1312361905,
+      "Eval_trend": 0.95,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.8984882374
+    },
+    {
+      "Model": "CalibratedSVC (P45)",
+      "Params": "{'C': 1.0}",
+      "Core_SCS": 0.8345080568,
+      "Core_Acceptance": 0.9291338583,
+      "Core_EntryRate": 1.8661417323,
+      "Core_en_over_ac": 2.0084745763,
+      "Core_D": 0.1825098646,
+      "Core_M": 0.1848088066,
+      "Core_trend": 0.9,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.8958968603,
+      "Eval_Acceptance": 0.7727272727,
+      "Eval_EntryRate": 1.1921212121,
+      "Eval_en_over_ac": 1.542745098,
+      "Eval_D": 0.1941123893,
+      "Eval_M": 0.0932907269,
+      "Eval_trend": 0.85,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.8660414884
+    },
+    {
+      "Model": "NearestCentroid (P40)",
+      "Params": "{'metric': 'euclidean'}",
+      "Core_SCS": 0.607606042,
+      "Core_Acceptance": 0.9448818898,
+      "Core_EntryRate": 2.0708661417,
+      "Core_en_over_ac": 2.1916666667,
+      "Core_D": 0.1728180306,
+      "Core_M": 0.1636391194,
+      "Core_trend": 0.6,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.8629978395,
+      "Eval_Acceptance": 0.8254545455,
+      "Eval_EntryRate": 1.3751515152,
+      "Eval_en_over_ac": 1.6659324523,
+      "Eval_D": 0.1913657657,
+      "Eval_M": 0.0846046683,
+      "Eval_trend": 0.8,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.8599854428
+    },
+    {
+      "Model": "LogisticRegression (P45)",
+      "Params": "{'C': 0.5, 'solver': 'liblinear', 'penalty': 'l2', 'class_weight': 'balanced', 'max_iter': 4000, 'random_state': 13}",
+      "Core_SCS": 0.8691633027,
+      "Core_Acceptance": 0.9028871391,
+      "Core_EntryRate": 1.7926509186,
+      "Core_en_over_ac": 1.9854651163,
+      "Core_D": 0.1966883727,
+      "Core_M": 0.1654442114,
+      "Core_trend": 0.9,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.8944491282,
+      "Eval_Acceptance": 0.7642424242,
+      "Eval_EntryRate": 1.1436363636,
+      "Eval_en_over_ac": 1.4964314036,
+      "Eval_D": 0.2084108492,
+      "Eval_M": 0.0699173818,
+      "Eval_trend": 0.8,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.8573469756
+    },
+    {
+      "Model": "RidgeClassifier (P40)",
+      "Params": "{'alpha': 5.0}",
+      "Core_SCS": 0.7949492199,
+      "Core_Acceptance": 0.9501312336,
+      "Core_EntryRate": 2.1233595801,
+      "Core_en_over_ac": 2.2348066298,
+      "Core_D": 0.1671121462,
+      "Core_M": 0.2094170139,
+      "Core_trend": 0.9,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.8160763685,
+      "Eval_Acceptance": 0.856969697,
+      "Eval_EntryRate": 1.4466666667,
+      "Eval_en_over_ac": 1.6881188119,
+      "Eval_D": 0.1718862908,
+      "Eval_M": 0.1111504293,
+      "Eval_trend": 0.8,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.8148788593
+    },
+    {
+      "Model": "GaussianNB (P40)",
+      "Params": "{'var_smoothing': 1e-09}",
+      "Core_SCS": 0.7122536932,
+      "Core_Acceptance": 0.9475065617,
+      "Core_EntryRate": 2.2598425197,
+      "Core_en_over_ac": 2.3850415512,
+      "Core_D": 0.1512213857,
+      "Core_M": 0.196547229,
+      "Core_trend": 0.8,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.7860566861,
+      "Eval_Acceptance": 0.8684848485,
+      "Eval_EntryRate": 1.5866666667,
+      "Eval_en_over_ac": 1.8269364969,
+      "Eval_D": 0.1546960839,
+      "Eval_M": 0.1239412762,
+      "Eval_trend": 0.8,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.721317646
+    },
+    {
+      "Model": "QDA (P60)",
+      "Params": "{'reg_param': 0.05}",
+      "Core_SCS": 0.4998995073,
+      "Core_Acceptance": 0.8057742782,
+      "Core_EntryRate": 1.7664041995,
+      "Core_en_over_ac": 2.1921824104,
+      "Core_D": 0.1958821715,
+      "Core_M": 0.0961046033,
+      "Core_trend": 0.35,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.5540583294,
+      "Eval_Acceptance": 0.703030303,
+      "Eval_EntryRate": 1.4078787879,
+      "Eval_en_over_ac": 2.0025862069,
+      "Eval_D": 0.216569366,
+      "Eval_M": 0.0616997972,
+      "Eval_trend": 0.35,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.1660650871
+    },
+    {
+      "Model": "LDA (P60)",
+      "Params": "{'solver': 'lsqr', 'shrinkage': 'auto'}",
+      "Core_SCS": 0.4935967952,
+      "Core_Acceptance": 0.7611548556,
+      "Core_EntryRate": 1.7165354331,
+      "Core_en_over_ac": 2.2551724138,
+      "Core_D": 0.1951299384,
+      "Core_M": 0.1021440399,
+      "Core_trend": 0.35,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.5431698821,
+      "Eval_Acceptance": 0.6460606061,
+      "Eval_EntryRate": 1.3103030303,
+      "Eval_en_over_ac": 2.0281425891,
+      "Eval_D": 0.2219934228,
+      "Eval_M": 0.0782474405,
+      "Eval_trend": 0.35,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": 0.0108244395
+    },
+    {
+      "Model": "Legacy kNN (K=5/th=0.32/c=32)",
+      "Params": "{'K': 5, 'thresh': 0.32, 'cutoff': 32, 'use_freq': True}",
+      "Core_SCS": 0.9154413686,
+      "Core_Acceptance": 0.4435695538,
+      "Core_EntryRate": 0.8687664042,
+      "Core_en_over_ac": 1.9585798817,
+      "Core_D": 0.2479784404,
+      "Core_M": 0.2486158416,
+      "Core_trend": 1.0,
+      "Core_EmptyLevels": 0,
+      "Eval_SCS": 0.9674580541,
+      "Eval_Acceptance": 0.1921212121,
+      "Eval_EntryRate": 0.2878787879,
+      "Eval_en_over_ac": 1.4984227129,
+      "Eval_D": 0.2200410037,
+      "Eval_M": 0.1275719175,
+      "Eval_trend": 0.95,
+      "Eval_EmptyLevels": 0,
+      "PenalizedObj": -1.196790249
+    }
+  ],
+  "production_summary": {
+    "acceptance_rate": 0.8606060606060606,
+    "entry_rate": 0.9981818181818182,
+    "accepted_words": 1420,
+    "rejected_words": 230,
+    "fully_accepted": 0,
+    "single_label": 1243,
+    "multi_label": 177,
+    "suggested_only": 179,
+    "hist_accepted_count": {
+      "0": 230,
+      "1": 1243,
+      "2": 133,
+      "3": 38,
+      "4": 6,
+      "5": 0,
+      "6": 0
+    },
+    "per_domain_totals": {
+      "Kn": 167,
+      "Cm": 86,
+      "Ap": 445,
+      "An": 257,
+      "Sn": 413,
+      "Ev": 279
+    }
+  },
+  "inputs": {
+    "core_csv": "revision_pipeline/core_merged.csv",
+    "candidates": "revision_pipeline/candidates_final.txt",
+    "n_core": 381,
+    "n_candidates": 1650
+  },
+  "mock_embeddings": false
+}
