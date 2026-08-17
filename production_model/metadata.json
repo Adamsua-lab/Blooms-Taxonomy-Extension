@@ -1,0 +1,45 @@
+{
+  "created_at": "2026-08-13_20-30-13",
+  "winner_name": "KNeighborsClassifier (P50)",
+  "winner_params": {
+    "n_neighbors": 21,
+    "metric": "cosine",
+    "weights": "distance",
+    "algorithm": "brute"
+  },
+  "levels": [
+    "Kn",
+    "Cm",
+    "Ap",
+    "An",
+    "Sn",
+    "Ev"
+  ],
+  "level_names": {
+    "Kn": "knowledge",
+    "Cm": "comprehension",
+    "Ap": "application",
+    "An": "analysis",
+    "Sn": "synthesis",
+    "Ev": "evaluation"
+  },
+  "use_row_weights": true,
+  "has_oof_thresholds": false,
+  "calibration": {
+    "type": "rank_cdf_per_class",
+    "note": "Apply CDFs to raw decision scores to map to [0,1] before thresholding.",
+    "cdf_count": 6
+  },
+  "thresholds": {
+    "tuning_source": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\thresholds.json",
+    "oof_present": false
+  },
+  "artifact_paths": {
+    "model": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\model.pkl",
+    "cdfs": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\calibration_cdfs.json",
+    "thresholds": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\thresholds.json",
+    "row_weights": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\row_weights.npy",
+    "S_core_calibrated": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\S_core_calibrated.npy",
+    "S_eval_calibrated": "results\\BT4_structural_best\\artifacts\\KNeighborsClassifier_P50_2026-08-13_20-30-13\\S_eval_calibrated.npy"
+  }
+}
