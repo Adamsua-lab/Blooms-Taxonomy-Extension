@@ -5,5 +5,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
+# caches and local rerun output
+results/_embed_cache/
+
 # local rerun output folders
 results/rerun/

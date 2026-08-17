@@ -37,6 +37,7 @@ If you want to **rerun the study**, see Reproduction below.
 | `results/core_structure/` | the core-verb distance tables and figures used in Section 2.1 |
 | `BT 1` to `BT 5` notebooks | the narrative walkthrough, executed with outputs |
 | `Papers & Books Used for Extraction/` | the source corpus, for transparency (see the notice in that folder) |
+| `legacy/` | material from the original submission, kept for reference and clearly superseded |
 
 ## The notebooks
 
