@@ -1,80 +1,123 @@
-# Bloom Taxonomy Verb Classification (BT1–BT4)
+# Extending the action verb inventory of Bloom's cognitive domain
 
-This repository provides an end-to-end pipeline to **extend and classify Bloom’s Taxonomy (Cognitive Domain) verb lists** using an NLP + ML workflow.
+Code, data and models behind the paper *Extending the Action Verb Inventory of Bloom's
+Cognitive Domain for Engineering Education with Machine Learning* (Talha, Shi and Qureshi).
 
-It includes:
-- A **core Bloom verb list** (ground-truth seed set)
-- **Verb extraction** from engineering PDFs (papers/books)
-- **WordNet-based filtering/verification** of candidate verbs
-- A trained **multi-label (one-vs-rest) classifier** to assign Bloom levels
-- **Expert validation files** for analysis and reporting
+The problem is simple to state. People write learning outcomes with action verbs, but the
+Bloom verb lists in circulation are short, generic and rarely cover the vocabulary a
+discipline actually uses. This repository builds a larger, discipline-specific verb bank
+by learning from the verbs that already carry expert labels and applying that model to
+verbs mined from engineering literature. It delivers 1,420 accepted verbs carrying 1,647
+verb-level assignments, plus the 230 candidates the model declined.
 
----
+## Start here
 
-## Project workflow (BT1 → BT4)
+If you want to **label verbs**, go to [`production_model/`](production_model/). Nothing
+else needs to run.
 
-1. **BT1 — Core list setup**  
-   Prepare and format the core verb list; perform baseline checks.
+```
+pip install -r requirements.txt
+python production_model/classify.py weld debug appraise
+```
 
-2. **BT2 — PDF extraction + WordNet filtering**  
-   Extract candidate verbs from engineering PDFs and filter/verify them using WordNet.
+If you want the **finished verb bank**, open
+[`results/Verb List Classified by Model.csv`](results/Verb%20List%20Classified%20by%20Model.csv).
+Rows with `Accepted = True` are the bank; the rest are the declined candidates, kept so
+the accept/reject behaviour stays inspectable.
 
-3. **BT3 — Model training + selection**  
-   Train and tune a multi-label (one-vs-rest) classifier using the core list and select the best-performing model.
+If you want to **rerun the study**, see Reproduction below.
 
-4. **BT4 — Production labeling + exports**  
-   Apply the selected model to new verbs and export final labeled lists and expert-sampling files.
+## What is in here
 
----
+| Folder | Contents |
+| --- | --- |
+| `production_model/` | the published model, packaged with a command line tool and usage notes |
+| `revision_pipeline/` | the scripts that produced every number in the paper, plus their inputs and audit trails |
+| `results/` | the delivered verb bank, model comparisons, structural scans, figures |
+| `results/core_structure/` | the core-verb distance tables and figures used in Section 2.1 |
+| `BT 1` to `BT 5` notebooks | the narrative walkthrough, executed with outputs |
+| `Papers & Books Used for Extraction/` | the source corpus, for transparency (see the notice in that folder) |
 
-## Folder overview
+## The notebooks
 
-### `BT1/` — Core list setup
-Contains notebooks/scripts used to prepare, clean, and standardize the **core Bloom verb list** used for training.
+They are meant to be read in order, and they drive the scripts in `revision_pipeline/`
+rather than duplicating them.
 
-### `BT2/` — PDF extraction + WordNet filtering
-Contains notebooks/scripts to:
-- parse engineering PDFs
-- extract candidate verbs
-- filter/validate verbs using WordNet  
-Outputs from this stage appear in `results/` (e.g., processed-PDF log and new verb list).
+1. **BT 1 - Analysis on core verb**: the labelled core list, its embedding geometry, and
+   the centroid and gap analyses reported in Section 2.1.
+2. **BT 2 - Data collection**: extracting candidate verbs from the corpus with Stanza and
+   filtering them through WordNet.
+3. **BT 3 - Model training and classification**: imports `retrain.py` and runs the model
+   zoo, calibration, threshold scan and selection.
+4. **BT 4 - Validation and reflection**: expert agreement and the structural checks.
+5. **BT 5 - Revision analyses**: cross-validation, encoder ablation, held-out evaluation,
+   significance tests and sensitivity analyses added during revision.
 
-### `BT3/` — Model training + selection
-Contains training and tuning code for the **multi-label one-vs-rest classifier**, including model selection logic and any evaluation utilities.
+## Reproduction
 
-### `BT4/` — Production labeling + exports
-Contains code to load the best saved model and:
-- classify new verbs
-- generate export files used in the paper and expert study
+Full rerun, in order. Each step writes into the folder you pass it, so nothing is
+overwritten by accident.
 
-### `Paper & Books used for extraction/` — Source PDFs
-Contains the **PDF papers/books** used in **BT2** for extracting engineering-related verbs.
+```
+cd revision_pipeline
+python normalize.py                 # 1,824 raw candidates -> 1,652 clean lemmas + audit trail
+python merge_core.py                # audited core + two published consolidations -> 381 verbs, 607 assignments
+python retrain.py --core-csv core_merged.csv --candidates candidates_final.txt --outdir ../results/rerun
+python cv_metrics.py --winner-json ../results/rerun/results/winner_and_constants.json
+python methodology_upgrades.py      # held-out full-pipeline evaluation
+python scs_sensitivity.py --components ../results/rerun/results/structural_scan_components.csv
+python expert_recompute.py          # expert agreement against the regenerated bank
+python paper_results.py             # the core-structure tables and figures
+```
 
-### `Best Model Saved/` — Reproducible model artifacts
-Stores the **final selected model** and supporting artifacts needed to reproduce predictions, such as:
-- trained classifier weights
-- calibration objects / thresholds (if saved by the pipeline)
-- metadata (e.g., label order, feature configuration, versioning)
+Embeddings are served from `all_embeddings.npz` so a rerun takes minutes rather than
+re-encoding every verb. Delete that file if you want to regenerate embeddings from
+scratch. Runs are seeded (seed 13); small differences can still appear across BLAS or
+scikit-learn builds.
 
-### `Results/` — Outputs and analysis files
-Holds all main outputs generated by the pipeline (TXT and CSV files used for verification, reporting, and expert validation).
+### Where each result comes from
 
----
+| Paper item | Produced by |
+| --- | --- |
+| Tables 2 to 4, Figures 1 and 2 (core structure) | `paper_results.py`, outputs in `results/core_structure/` |
+| Table 5 (corpus composition) | `BT 2` notebook |
+| Table 6 (cross-validation) | `cv_metrics.py` -> `cv_results_mpnet.csv` |
+| Table 7 (encoder ablation) | `cv_metrics.py --encoder ...` -> `cv_results_minilm.csv`, `cv_results_droberta.csv` |
+| Tables 8a and 8b (model selection) | `retrain.py` -> `winner_and_constants.json`, `model_comparison_table5.csv` |
+| Table 9 (extension outcomes) | `retrain.py` -> `Verb List Classified by Model.csv` |
+| Table 10 (gap trend across encoders) | `paper_results.py` |
+| Table 11 (held-out pipeline) | `methodology_upgrades.py` -> `heldout_results.csv` |
+| Expert agreement in Section 3.3.3 | `expert_recompute.py` |
+| Appendix C (full verb bank) | `results/Verb List Classified by Model.csv` |
 
-## Repository structure
+## Method in one paragraph
 
-```text
-.
-├── BT1/                               # Core list setup
-├── BT2/                               # PDF verb extraction + WordNet filtering
-├── BT3/                               # Model training + selection
-├── BT4/                               # Production labeling + exports
-├── Paper & Books used for extraction/ # PDF files used in BT2
-├── best model saved/                  # Best model + artifacts for reproducibility
-└── results/                           # Outputs and analysis files
-    ├── BTdone_paper_list.txt
-    ├── BTverblist_core.txt
-    ├── BTverblist_new.txt
-    ├── Verb List Classified by Model.csv
-    ├── ExpertSample_single (Model Classified Sample).csv
-    └── Final File(with model & Expert Classification).csv
+Verbs are embedded with `all-mpnet-base-v2` and classified by one-vs-rest multi-label
+models. Raw scores are mapped to [0, 1] through per-level empirical CDFs fitted
+out-of-fold, and a verb is accepted at a level when its calibrated score clears that
+level's threshold, set by a percentile scan. Model selection uses two stages that never
+touch the expert data: families first have to pass a structural adequacy floor and are
+compared on a penalised structural score and cross-validated macro AUC, then the shortlist
+is compared again with held-out end-to-end accuracy added. The winner was a k-nearest
+neighbour classifier at the 50th percentile. Full detail, including every constant, is in
+the paper and in the header of `retrain.py`.
+
+## Data notes
+
+- `revision_pipeline/table9_pass1.csv` and `table9_pass2.csv` are two independent
+  transcriptions of the published source table. They are byte-identical, which is the
+  evidence behind the claim that the transcriptions agreed on all 580 assignments.
+- `revision_pipeline/core_notebook_original.csv` is the superseded working copy, kept so
+  the discrepancies we corrected remain checkable.
+- `revision_pipeline/normalization_audit.csv` records what happened to every one of the
+  1,824 raw candidates, one row each.
+
+## Citing this work
+
+See `CITATION.cff`. Please cite the paper if you use the verb bank or the model.
+
+## Licence
+
+MIT, and it covers the code, the data files and the models produced by this project. It
+does **not** cover the third-party publications in `Papers & Books Used for Extraction/`,
+which remain under their publishers' terms; see the notice in that folder.
